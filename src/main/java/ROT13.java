@@ -7,15 +7,15 @@ import static java.lang.Character.toLowerCase;
 
 public class ROT13  {
 
-    private Character[] standardArray;
-    private Character[] encryptArray;
+    private char[] standardArray;
+    private char[] encryptArray;
 
     ROT13(Character cs, Character cf) {
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
         int startingIndex1 = alphabet.indexOf(cs);
         int loopAround1 = 0;
 
-        this.standardArray = new Character[alphabet.length()];
+        this.standardArray = new char[alphabet.length()];
         //Fill the array starting at the first character supplied.
         //When you go past z, loop back to beginning.
         for (int i = 0; i < alphabet.length(); i++){
@@ -34,7 +34,7 @@ public class ROT13  {
         int startingIndex2 = alphabet.indexOf(cf) - alphabet.indexOf(cs);
         int loopAround2 = 0;
 
-        this.encryptArray = new Character[alphabet.length()];
+        this.encryptArray = new char[alphabet.length()];
         //Fill the array starting at the first character supplied.
         //When you go past z, loop back to beginning.
         for (int i = 0; i < alphabet.length(); i++){
@@ -57,33 +57,40 @@ public class ROT13  {
 
 
     ROT13() {
+        this.standardArray = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        this.encryptArray ="nopqrstuvwxyzabcdefghijklm".toCharArray();
     }
 
 
     public String crypt(String text) throws UnsupportedOperationException {
-        List<String> cyrptText = new ArrayList<>();
+        List<String> cryptText = new ArrayList<>();
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
         String rot13Alphabet ="nopqrstuvwxyzabcdefghijklm";
+        String specialChars = "!@#$%^&*()?. ";
 
-        for (int i = 0; i < text.length(); i++){
-            char indexChar = text.charAt(i);
-            int alphabetindex = alphabet.indexOf(indexChar);
-            String cryptedLetter = String.valueOf(rot13Alphabet.charAt(alphabetindex));
-            cyrptText.add(cryptedLetter);
+        for (int i = 0; i < text.length(); i++) {
+
+            char indexChar = text.toLowerCase().charAt(i);
+            String indexStringChar = indexChar + "";
+
+            if (specialChars.contains(indexStringChar)) {
+            } else if (indexStringChar.equals(" ")) {
+                cryptText.add(indexChar + "");
+            } else {
+                int alphabetindex = alphabet.indexOf(indexChar);
+                char cryptedLetter = rot13Alphabet.charAt(alphabetindex);
+                cryptText.add(cryptedLetter + "");
+            }
         }
-
-
-
-
-        return cyrptText.toString();
+        return cryptText.toString();
     }
 
     public String encrypt(String text) {
-        return text;
+        return crypt(text);
     }
 
     public String decrypt(String text) {
-        return text;
+        return encrypt(text);
     }
 
     public static String rotate(String s, Character c) {
